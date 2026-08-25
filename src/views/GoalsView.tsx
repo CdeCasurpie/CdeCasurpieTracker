@@ -61,20 +61,20 @@ export const GoalsView: React.FC = () => {
                     {data.goals.length === 0 && <p className="text-cde-text-muted text-sm italic col-span-full">No hay metas registradas.</p>}
                     {data.goals.map((goal, idx) => (
                         <div key={goal.id} className="bg-cde-bg-light p-8 border border-cde-border rounded-xl relative group flex flex-col shadow-sm hover:shadow-md hover:border-cde-text transition-all animate-slide-up" style={{ animationDelay: `${200 + idx * 50}ms` }}>
-                            <div className="absolute top-6 right-6 flex gap-3 opacity-0 group-hover:opacity-100 transition-all">
+                            <div className="absolute top-6 right-6 flex gap-3 opacity-40 group-hover:opacity-100 transition-all">
                                 <button onClick={() => {
                                     const newDesc = window.prompt("Editar meta:", goal.description);
                                     if (newDesc && newDesc.trim()) {
                                         updateGoal(goal.id, newDesc.trim(), goal.category);
                                     }
-                                }} className="text-cde-border hover:text-cde-text hover:scale-110 active:scale-90 transition-all">
+                                }} className="text-cde-border hover:text-cde-text hover:scale-110 active:scale-90 transition-all" title="Editar Meta">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
                                 </button>
                                 <button onClick={() => {
                                     if (window.confirm(`¿Estás seguro de eliminar la meta "${goal.description}" y todas sus tareas?`)) {
                                         deleteGoal(goal.id);
                                     }
-                                }} className="text-cde-border hover:text-red-400 hover:scale-110 active:scale-90 transition-all">
+                                }} className="text-cde-border hover:text-red-400 hover:scale-110 active:scale-90 transition-all" title="Eliminar Meta">
                                     <Trash2 size={16} />
                                 </button>
                             </div>
@@ -102,20 +102,20 @@ export const GoalsView: React.FC = () => {
                                                 {task.completed ? <CheckCircle size={16} /> : <Circle size={16} />}
                                             </button>
                                             <span className={`text-sm flex-1 leading-tight transition-colors ${task.completed ? 'line-through text-cde-text-muted' : 'group-hover/task:text-white'}`}>{task.description}</span>
-                                            <div className="flex gap-2 opacity-0 group-hover/task:opacity-100 transition-all">
+                                            <div className="flex gap-2 opacity-40 group-hover/task:opacity-100 transition-all">
                                                 <button onClick={() => {
                                                     const newDesc = window.prompt("Editar tarea:", task.description);
                                                     if (newDesc && newDesc.trim()) {
                                                         updateTask(task.id, newDesc.trim());
                                                     }
-                                                }} className="text-cde-border hover:text-cde-text hover:scale-110 active:scale-90 transition-all">
+                                                }} className="text-cde-border hover:text-cde-text hover:scale-110 active:scale-90 transition-all" title="Editar Tarea">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
                                                 </button>
                                                 <button onClick={() => {
                                                     if (window.confirm(`¿Eliminar tarea "${task.description}"?`)) {
                                                         deleteTask(task.id);
                                                     }
-                                                }} className="text-cde-border hover:text-red-400 hover:scale-110 active:scale-90 transition-all">
+                                                }} className="text-cde-border hover:text-red-400 hover:scale-110 active:scale-90 transition-all" title="Eliminar Tarea">
                                                     <Trash2 size={14} />
                                                 </button>
                                             </div>

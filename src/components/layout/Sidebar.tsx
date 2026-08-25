@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Home, Target, Activity, User, Settings, ExternalLink } from 'lucide-react';
+import logoUrl from '../../assets/logo.png';
 
 export const Sidebar: React.FC = () => {
     const navItems = [
@@ -16,7 +17,7 @@ export const Sidebar: React.FC = () => {
             <aside className="hidden md:flex w-64 bg-cde-bg border-r border-cde-border flex-col h-screen fixed left-0 top-0 z-50 animate-slide-right">
                 <div className="p-8 border-b border-cde-border flex flex-col items-center justify-center">
                     <div className="w-16 h-16 rounded-full border border-cde-text flex items-center justify-center relative shadow-[0_0_15px_rgba(252,211,209,0.15)] mb-4 overflow-hidden">
-                        <img src="/favicon.png" alt="César Perales Logo" className="w-full h-full object-cover" />
+                        <img src={logoUrl} alt="César Perales Logo" className="w-full h-full object-cover" />
                     </div>
                     <h1 className="text-sm font-bold tracking-[0.1em] uppercase text-center leading-tight">César Perales<br/><span className="text-cde-text-muted text-xs">Tracker</span></h1>
                 </div>
