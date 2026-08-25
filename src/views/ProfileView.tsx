@@ -95,6 +95,52 @@ export const ProfileView: React.FC = () => {
                     </div>
                 </section>
             </div>
+
+            {/* Análisis Táctico */}
+            <section className="bg-cde-bg-light border border-cde-border p-8 rounded-xl animate-slide-up shadow-sm" style={{ animationDelay: '400ms' }}>
+                <h3 className="text-xl tracking-widest uppercase mb-6 border-b border-cde-border pb-4 flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-cde-text"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    Análisis Táctico y Recomendaciones
+                </h3>
+                
+                <div className="space-y-6">
+                    <p className="text-sm text-cde-text-muted leading-relaxed">
+                        Nuestro objetivo es apuntar a la <strong>perfección</strong>. Tus atributos reflejan exactamente tu esfuerzo en el tracker.
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="border border-cde-border/50 bg-cde-bg-lighter/30 p-5 rounded-lg border-l-2 border-l-cde-text transition-all hover:bg-cde-bg-lighter/60">
+                            <h4 className="font-bold text-cde-text mb-2 uppercase tracking-wide text-sm">Disciplina ({Math.round((constancia + productividad) / 2)}/100)</h4>
+                            <p className="text-xs text-cde-text-muted leading-relaxed mb-2">
+                                <strong>¿Cómo se calcula?</strong> Es el promedio exacto entre tu Constancia en hábitos y tu Productividad en tareas.
+                            </p>
+                            <p className="text-xs text-white/80 leading-relaxed">
+                                <strong>Mejora:</strong> Para aumentar tu disciplina, debes dominar ambos frentes. No basta con avanzar en tus metas si descuidas tus hábitos diarios. ¡Mantén el equilibrio!
+                            </p>
+                        </div>
+
+                        <div className="border border-cde-border/50 bg-cde-bg-lighter/30 p-5 rounded-lg border-l-2 border-l-cde-text transition-all hover:bg-cde-bg-lighter/60">
+                            <h4 className="font-bold text-cde-text mb-2 uppercase tracking-wide text-sm">Productividad ({productividad}/100)</h4>
+                            <p className="text-xs text-cde-text-muted leading-relaxed mb-2">
+                                <strong>¿Cómo se calcula?</strong> Tareas completadas vs total de tareas creadas.
+                            </p>
+                            <p className="text-xs text-white/80 leading-relaxed">
+                                <strong>Mejora:</strong> {productividad < 50 ? 'Tienes muchas tareas acumuladas. Dedica 15 minutos hoy a limpiar y cerrar aquellas que ya no harás.' : '¡Vas bien! Para rozar el 100%, desglosa tus metas en tareas más pequeñas (micro-tareas) para completarlas más rápido.'}
+                            </p>
+                        </div>
+
+                        <div className="border border-cde-border/50 bg-cde-bg-lighter/30 p-5 rounded-lg border-l-2 border-l-cde-text md:col-span-2 transition-all hover:bg-cde-bg-lighter/60">
+                            <h4 className="font-bold text-cde-text mb-2 uppercase tracking-wide text-sm">Constancia ({constancia}/100)</h4>
+                            <p className="text-xs text-cde-text-muted leading-relaxed mb-2">
+                                <strong>¿Cómo se calcula?</strong> Refleja tu fidelidad al marcar los hábitos programados.
+                            </p>
+                            <p className="text-xs text-white/80 leading-relaxed">
+                                <strong>Mejora:</strong> {constancia < 60 ? 'Estás perdiendo el ritmo. Identifica el hábito más difícil y redúcelo a su versión de 2 minutos para recuperar inercia.' : 'Excelente consistencia. Tu sistema está blindado. Para ser perfecto, recuerda la regla de oro: nunca falles dos días seguidos.'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     );
 };
