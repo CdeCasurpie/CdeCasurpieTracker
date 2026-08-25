@@ -84,21 +84,31 @@ export const DashboardView: React.FC = () => {
                     <h3 className="text-xl tracking-widest uppercase border-b border-cde-border pb-4 mb-4">Hábitos del Día</h3>
                     
                     <div className="space-y-3">
-                        {data.habits.length === 0 && <p className="text-sm italic text-cde-text-muted">No hay hábitos configurados.</p>}
-                        {data.habits.map(habit => {
-                            const isExecuted = getHabitLogForToday(habit.id)?.executed || false;
-                            return (
-                                <div key={habit.id} className="flex items-center justify-between p-4 bg-cde-bg-lighter border border-cde-border rounded transition-colors hover:border-cde-text">
-                                    <span className={`font-medium ${isExecuted ? 'text-cde-text-muted line-through' : ''}`}>{habit.name}</span>
-                                    <button 
-                                        onClick={() => toggleHabitLog(habit.id, today)} 
-                                        className={`transition-colors ${isExecuted ? 'text-cde-text' : 'text-cde-text-muted hover:text-white'}`}
-                                    >
-                                        {isExecuted ? <CheckSquare size={24} /> : <Square size={24} />}
-                                    </button>
-                                </div>
-                            );
-                        })}
+                        {(() => {
+                            const dayMapping = { 0: 'D', 1: 'L', 2: 'M', 3: 'Mi', 4: 'J', 5: 'V', 6: 'S' } as const;
+                            const currentDayKey = dayMapping[today.getDay() as keyof typeof dayMapping];
+                            
+                            const habitsForToday = data.habits.filter(h => h.schedule[currentDayKey as keyof typeof h.schedule]);
+
+                            if (habitsForToday.length === 0) {
+                                return <p className="text-sm italic text-cde-text-muted">No hay hábitos programados para hoy.</p>;
+                            }
+
+                            return habitsForToday.map(habit => {
+                                const isExecuted = getHabitLogForToday(habit.id)?.executed || false;
+                                return (
+                                    <div key={habit.id} className="flex items-center justify-between p-4 bg-cde-bg-lighter border border-cde-border rounded transition-colors hover:border-cde-text">
+                                        <span className={`font-medium ${isExecuted ? 'text-cde-text-muted line-through' : ''}`}>{habit.name}</span>
+                                        <button 
+                                            onClick={() => toggleHabitLog(habit.id, today)} 
+                                            className={`transition-colors ${isExecuted ? 'text-cde-text' : 'text-cde-text-muted hover:text-white'}`}
+                                        >
+                                            {isExecuted ? <CheckSquare size={24} /> : <Square size={24} />}
+                                        </button>
+                                    </div>
+                                );
+                            });
+                        })()}
                     </div>
                 </section>
             </div>
@@ -115,7 +125,13 @@ export const DashboardView: React.FC = () => {
                 </div>
                 <div className="bg-cde-bg-light border border-cde-border p-4 rounded text-center">
                     <p className="text-cde-text-muted text-xs tracking-widest uppercase mb-1">Hábitos Hoy</p>
-                    <p className="text-2xl font-bold">{data.habits.filter(h => getHabitLogForToday(h.id)?.executed).length} / {data.habits.length}</p>
+                    {(() => {
+                        const dayMapping = { 0: 'D', 1: 'L', 2: 'M', 3: 'Mi', 4: 'J', 5: 'V', 6: 'S' } as const;
+                        const currentDayKey = dayMapping[today.getDay() as keyof typeof dayMapping];
+                        const habitsForToday = data.habits.filter(h => h.schedule[currentDayKey as keyof typeof h.schedule]);
+                        const completed = habitsForToday.filter(h => getHabitLogForToday(h.id)?.executed).length;
+                        return <p className="text-2xl font-bold">{completed} / {habitsForToday.length}</p>;
+                    })()}
                 </div>
             </div>
         </div>
