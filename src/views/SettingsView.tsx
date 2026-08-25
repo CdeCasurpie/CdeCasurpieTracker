@@ -72,6 +72,23 @@ export const SettingsView: React.FC = () => {
                         <input type="file" accept=".json" className="hidden" onChange={handleImport} />
                     </label>
                 </div>
+                <hr className="border-cde-border" />
+
+                <div className="group">
+                    <h3 className="text-xl tracking-widest uppercase mb-3 group-hover:text-cde-text transition-colors">Tutorial Guiado</h3>
+                    <p className="text-sm text-cde-text-muted mb-6 leading-relaxed">¿Olvidaste cómo funciona la aplicación o simplemente quieres ver la animación de nuevo? Puedes volver a tomar el recorrido guiado.</p>
+                    <button 
+                        onClick={() => {
+                            localStorage.removeItem('cde_tutorial_completed');
+                            window.location.hash = '/';
+                            window.location.reload();
+                        }} 
+                        className="border border-cde-text bg-cde-bg-lighter px-8 py-3 rounded-lg hover:bg-cde-text hover:text-cde-bg transition-all active:scale-95 flex items-center gap-3 font-medium"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> 
+                        Volver a ver el Tutorial
+                    </button>
+                </div>
             </section>
         </div>
     );
