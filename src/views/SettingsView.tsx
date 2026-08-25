@@ -39,36 +39,36 @@ export const SettingsView: React.FC = () => {
     };
 
     return (
-        <div className="space-y-8 animate-fade-in max-w-3xl">
-            <header>
+        <div className="space-y-12 animate-fade-in max-w-3xl mx-auto">
+            <header className="animate-slide-up" style={{ animationDelay: '0ms' }}>
                 <h2 className="text-3xl font-bold tracking-widest uppercase">Configuración</h2>
                 <p className="text-cde-text-muted mt-2">Administra tus datos locales.</p>
             </header>
 
             {msg && (
-                <div className="bg-cde-text/10 border border-cde-text text-cde-text p-4 rounded text-sm">
+                <div className="bg-cde-text/10 border border-cde-text text-cde-text p-4 rounded-lg text-sm font-medium animate-slide-up">
                     {msg}
                 </div>
             )}
 
-            <section className="bg-cde-bg-light border border-cde-border p-8 rounded-lg space-y-6">
-                <div>
-                    <h3 className="text-lg tracking-widest uppercase mb-2">Exportar Datos</h3>
-                    <p className="text-sm text-cde-text-muted mb-4">Descarga todo tu progreso en formato JSON para que no dependas de servidores. Guárdalo seguro.</p>
-                    <button onClick={handleExport} className="border border-cde-text px-6 py-2 rounded hover:bg-cde-text hover:text-cde-bg transition-colors flex items-center gap-2">
-                        <Download size={16} /> Descargar JSON
+            <section className="bg-cde-bg-light border border-cde-border p-10 rounded-xl space-y-10 animate-slide-up shadow-sm" style={{ animationDelay: '100ms' }}>
+                <div className="group">
+                    <h3 className="text-xl tracking-widest uppercase mb-3 group-hover:text-cde-text transition-colors">Exportar Datos</h3>
+                    <p className="text-sm text-cde-text-muted mb-6 leading-relaxed">Descarga todo tu progreso en formato JSON para que no dependas de servidores. Guárdalo seguro.</p>
+                    <button onClick={handleExport} className="border border-cde-text bg-cde-bg-lighter px-8 py-3 rounded-lg hover:bg-cde-text hover:text-cde-bg transition-all active:scale-95 flex items-center gap-3 font-medium">
+                        <Download size={18} /> Descargar JSON
                     </button>
                 </div>
 
                 <hr className="border-cde-border" />
 
-                <div>
-                    <h3 className="text-lg tracking-widest uppercase mb-2 flex items-center gap-2">
-                        Importar Datos <AlertTriangle size={16} className="text-yellow-500" />
+                <div className="group">
+                    <h3 className="text-xl tracking-widest uppercase mb-3 flex items-center gap-3 group-hover:text-cde-text transition-colors">
+                        Importar Datos <AlertTriangle size={18} className="text-yellow-500 animate-pulse" />
                     </h3>
-                    <p className="text-sm text-cde-text-muted mb-4">Carga un archivo JSON previamente exportado. Esto sobrescribirá todos los datos actuales del navegador.</p>
-                    <label className="border border-cde-text px-6 py-2 rounded hover:bg-cde-text hover:text-cde-bg transition-colors flex items-center gap-2 cursor-pointer inline-flex">
-                        <Upload size={16} /> Seleccionar JSON
+                    <p className="text-sm text-cde-text-muted mb-6 leading-relaxed">Carga un archivo JSON previamente exportado. Esto sobrescribirá todos los datos actuales del navegador.</p>
+                    <label className="border border-cde-text bg-cde-bg-lighter px-8 py-3 rounded-lg hover:bg-cde-text hover:text-cde-bg transition-all active:scale-95 flex items-center gap-3 cursor-pointer inline-flex font-medium">
+                        <Upload size={18} /> Seleccionar JSON
                         <input type="file" accept=".json" className="hidden" onChange={handleImport} />
                     </label>
                 </div>

@@ -13,7 +13,7 @@ export const Sidebar: React.FC = () => {
     return (
         <>
             {/* DESKTOP SIDEBAR */}
-            <aside className="hidden md:flex w-64 bg-cde-bg border-r border-cde-border flex-col h-screen fixed left-0 top-0 z-50">
+            <aside className="hidden md:flex w-64 bg-cde-bg border-r border-cde-border flex-col h-screen fixed left-0 top-0 z-50 animate-slide-right">
                 <div className="p-8 border-b border-cde-border flex flex-col items-center justify-center">
                     <div className="w-16 h-16 rounded-full border border-cde-text flex items-center justify-center relative shadow-[0_0_15px_rgba(252,211,209,0.15)] mb-4 overflow-hidden">
                         <img src="/favicon.png" alt="César Perales Logo" className="w-full h-full object-cover" />
@@ -65,7 +65,7 @@ export const Sidebar: React.FC = () => {
             </aside>
 
             {/* MOBILE BOTTOM NAV */}
-            <nav className="md:hidden fixed bottom-0 left-0 w-full bg-cde-bg border-t border-cde-border flex items-center justify-around z-50 pb-4 pt-1 shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
+            <nav className="md:hidden fixed bottom-0 left-0 w-full bg-cde-bg border-t border-cde-border flex items-center justify-around z-50 pb-4 pt-1 shadow-[0_-10px_20px_rgba(0,0,0,0.5)] animate-slide-up" style={{ animationDelay: '200ms' }}>
                 {navItems.map(item => (
                     <NavLink 
                         key={item.path} 

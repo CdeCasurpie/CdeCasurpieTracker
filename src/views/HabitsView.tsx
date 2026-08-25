@@ -38,22 +38,22 @@ export const HabitsView: React.FC = () => {
     };
 
     return (
-        <div className="space-y-12 animate-fade-in">
-            <header>
+        <div className="space-y-12 animate-fade-in max-w-7xl mx-auto">
+            <header className="animate-slide-up" style={{ animationDelay: '0ms' }}>
                 <h2 className="text-3xl font-bold tracking-widest uppercase">Gestión de Hábitos</h2>
                 <p className="text-cde-text-muted mt-2">Tu progreso semanal y configuración.</p>
             </header>
 
-            <section className="bg-cde-bg-light border border-cde-border p-6 rounded-lg overflow-x-auto">
+            <section className="bg-cde-bg-light border border-cde-border p-8 rounded-xl overflow-x-auto shadow-sm animate-slide-up" style={{ animationDelay: '100ms' }}>
                 <table className="w-full text-left border-collapse min-w-[700px]">
                     <thead>
                         <tr className="bg-cde-bg-lighter border-b border-cde-border text-sm tracking-wider text-cde-text-muted">
                             <th className="p-4 font-normal uppercase">Hábito</th>
                             {weekDays.map((date, i) => (
                                 <th key={i} className="p-4 font-normal text-center">
-                                    <div className="flex flex-col items-center">
-                                        <span className="uppercase text-xs">{dayLabels[i]}</span>
-                                        <span className={`text-lg ${isSameDay(date, today) ? 'text-cde-text font-bold' : ''}`}>
+                                    <div className="flex flex-col items-center gap-1">
+                                        <span className="uppercase text-[10px] tracking-widest">{dayLabels[i]}</span>
+                                        <span className={`text-xl font-medium ${isSameDay(date, today) ? 'text-cde-text font-bold bg-cde-bg rounded-full w-8 h-8 flex items-center justify-center border border-cde-text/30 shadow-[0_0_10px_rgba(252,211,209,0.1)]' : 'w-8 h-8 flex items-center justify-center'}`}>
                                             {format(date, 'd')}
                                         </span>
                                     </div>
@@ -65,10 +65,10 @@ export const HabitsView: React.FC = () => {
                     <tbody>
                         {data.habits.length === 0 && (
                             <tr>
-                                <td colSpan={9} className="p-4 text-center text-cde-text-muted text-sm italic">Sin hábitos registrados.</td>
+                                <td colSpan={9} className="p-8 text-center text-cde-text-muted text-sm italic">Sin hábitos registrados.</td>
                             </tr>
                         )}
-                        {data.habits.map(habit => {
+                        {data.habits.map((habit, idx) => {
                             let totalScheduled = 0;
                             let executedDays = 0;
 
@@ -90,8 +90,8 @@ export const HabitsView: React.FC = () => {
                             const progress = totalScheduled === 0 ? 0 : Math.round((executedDays / totalScheduled) * 100);
 
                             return (
-                                <tr key={habit.id} className="border-b border-cde-border hover:bg-cde-bg-lighter/50 transition-colors">
-                                    <td className="p-4 font-medium">{habit.name}</td>
+                                <tr key={habit.id} className="border-b border-cde-border hover:bg-cde-bg-lighter/50 transition-colors group animate-slide-up" style={{ animationDelay: `${200 + idx * 50}ms` }}>
+                                    <td className="p-4 font-medium group-hover:text-cde-text transition-colors">{habit.name}</td>
                                     {weekDays.map((date, i) => {
                                         const dayIndex = date.getDay() as keyof typeof dayMapping;
                                         const dayKey = dayMapping[dayIndex];
@@ -102,24 +102,24 @@ export const HabitsView: React.FC = () => {
                                         return (
                                             <td key={i} className="p-4 text-center">
                                                 {!isScheduled ? (
-                                                    <div className="flex justify-center text-cde-border"><Minus size={20} /></div>
+                                                    <div className="flex justify-center text-cde-border/50"><Minus size={20} /></div>
                                                 ) : (
                                                     <button 
                                                         onClick={() => toggleHabitLog(habit.id, date)} 
-                                                        className={`transition-colors ${isExecuted ? 'text-cde-text' : 'text-cde-text-muted hover:text-white'}`}
+                                                        className={`transition-all active:scale-90 hover:scale-110 ${isExecuted ? 'text-cde-text opacity-70 hover:opacity-100' : 'text-cde-text-muted hover:text-white'}`}
                                                     >
-                                                        {isExecuted ? <CheckSquare size={22} /> : <Square size={22} />}
+                                                        {isExecuted ? <CheckSquare size={24} /> : <Square size={24} />}
                                                     </button>
                                                 )}
                                             </td>
                                         );
                                     })}
                                     <td className="p-4">
-                                        <div className="flex items-center gap-2 justify-center">
-                                            <div className="w-16 bg-cde-bg-lighter h-2 rounded-full overflow-hidden">
-                                                <div className="h-full bg-cde-text transition-all" style={{ width: `${progress}%` }}></div>
+                                        <div className="flex items-center gap-3 justify-center">
+                                            <div className="w-20 bg-cde-bg-lighter h-2.5 rounded-full overflow-hidden">
+                                                <div className="h-full bg-cde-text transition-all duration-700 ease-out" style={{ width: `${progress}%` }}></div>
                                             </div>
-                                            <span className="text-xs w-8 text-right">{progress}%</span>
+                                            <span className="text-xs w-8 text-right font-bold">{progress}%</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -129,45 +129,45 @@ export const HabitsView: React.FC = () => {
                 </table>
             </section>
 
-            <section className="bg-cde-bg-light border border-cde-border p-6 rounded-lg">
-                <h3 className="text-lg tracking-widest uppercase mb-6">Crear Nuevo Hábito</h3>
-                <form onSubmit={handleAddHabit} className="flex flex-col gap-6">
+            <section className="bg-cde-bg-light border border-cde-border p-8 rounded-xl animate-slide-up shadow-sm" style={{ animationDelay: '300ms' }}>
+                <h3 className="text-xl tracking-widest uppercase mb-8 border-b border-cde-border pb-4">Crear Nuevo Hábito</h3>
+                <form onSubmit={handleAddHabit} className="flex flex-col gap-8">
                     <div>
-                        <label className="block text-sm uppercase tracking-widest text-cde-text-muted mb-2">Nombre del hábito</label>
+                        <label className="block text-xs uppercase tracking-widest text-cde-text-muted mb-3 font-bold">Nombre del hábito</label>
                         <input 
                             type="text" 
                             value={newHabitName}
                             onChange={e => setNewHabitName(e.target.value)}
                             placeholder="Ej. Meditar 10 min..." 
-                            className="bg-cde-bg-lighter border border-cde-border px-4 py-2 rounded focus:outline-none focus:border-cde-text w-full max-w-md"
+                            className="bg-cde-bg-lighter border border-cde-border px-5 py-3 rounded-lg focus:outline-none focus:border-cde-text focus:ring-1 focus:ring-cde-text w-full max-w-md transition-all"
                             required
                         />
                     </div>
                     
                     <div>
-                        <label className="block text-sm uppercase tracking-widest text-cde-text-muted mb-3">Frecuencia</label>
-                        <div className="flex gap-4 mb-4">
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" checked={scheduleType === 'daily'} onChange={() => setScheduleType('daily')} className="accent-cde-text" />
-                                <span className="text-sm">Todos los días</span>
+                        <label className="block text-xs uppercase tracking-widest text-cde-text-muted mb-4 font-bold">Frecuencia</label>
+                        <div className="flex gap-6 mb-6">
+                            <label className="flex items-center gap-3 cursor-pointer group">
+                                <input type="radio" checked={scheduleType === 'daily'} onChange={() => setScheduleType('daily')} className="accent-cde-text w-4 h-4" />
+                                <span className="text-sm group-hover:text-white transition-colors">Todos los días</span>
                             </label>
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" checked={scheduleType === 'custom'} onChange={() => setScheduleType('custom')} className="accent-cde-text" />
-                                <span className="text-sm">Personalizado</span>
+                            <label className="flex items-center gap-3 cursor-pointer group">
+                                <input type="radio" checked={scheduleType === 'custom'} onChange={() => setScheduleType('custom')} className="accent-cde-text w-4 h-4" />
+                                <span className="text-sm group-hover:text-white transition-colors">Personalizado</span>
                             </label>
                         </div>
 
                         {scheduleType === 'custom' && (
-                            <div className="flex flex-wrap gap-3">
+                            <div className="flex flex-wrap gap-4 animate-fade-in">
                                 {dayLabels.map(day => (
                                     <button 
                                         type="button"
                                         key={day}
                                         onClick={() => toggleCustomDay(day as keyof typeof customSchedule)}
-                                        className={`w-10 h-10 rounded border flex items-center justify-center text-sm font-bold transition-colors ${
+                                        className={`w-12 h-12 rounded-lg border-2 flex items-center justify-center text-sm font-bold transition-all active:scale-95 ${
                                             customSchedule[day as keyof typeof customSchedule] 
-                                                ? 'bg-cde-text text-cde-bg border-cde-text' 
-                                                : 'bg-cde-bg-lighter text-cde-text-muted border-cde-border hover:border-cde-text'
+                                                ? 'bg-cde-text text-cde-bg border-cde-text shadow-[0_0_10px_rgba(252,211,209,0.3)]' 
+                                                : 'bg-cde-bg-lighter text-cde-text-muted border-cde-border hover:border-cde-text hover:text-cde-text'
                                         }`}
                                     >
                                         {day}
@@ -177,8 +177,8 @@ export const HabitsView: React.FC = () => {
                         )}
                     </div>
 
-                    <button type="submit" className="self-start border border-cde-text px-6 py-2 rounded hover:bg-cde-text hover:text-cde-bg transition-colors flex items-center gap-2 uppercase tracking-widest text-sm mt-4">
-                        <PlusCircle size={16} /> Guardar
+                    <button type="submit" className="self-start border border-cde-text bg-cde-bg-lighter px-8 py-3 rounded-lg hover:bg-cde-text hover:text-cde-bg transition-all active:scale-95 flex items-center gap-2 uppercase tracking-widest text-sm mt-4 font-medium">
+                        <PlusCircle size={18} /> Guardar
                     </button>
                 </form>
             </section>
