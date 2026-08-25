@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useTrackerStore } from '../store/useTrackerStore';
-import { PlusCircle, CheckSquare, Square, Minus } from 'lucide-react';
+import { PlusCircle, CheckSquare, Square, Minus, Trash2 } from 'lucide-react';
 import { format, startOfWeek, addDays, isSameDay } from 'date-fns';
 
 export const HabitsView: React.FC = () => {
-    const { data, addHabit, toggleHabitLog } = useTrackerStore();
+    const { data, addHabit, toggleHabitLog, updateHabit, deleteHabit } = useTrackerStore();
     const [newHabitName, setNewHabitName] = useState('');
     const [scheduleType, setScheduleType] = useState<'daily' | 'custom'>('daily');
     const [customSchedule, setCustomSchedule] = useState({ L: true, M: true, Mi: true, J: true, V: true, S: true, D: false });
@@ -91,7 +91,26 @@ export const HabitsView: React.FC = () => {
 
                             return (
                                 <tr key={habit.id} className="border-b border-cde-border hover:bg-cde-bg-lighter/50 transition-colors group animate-slide-up" style={{ animationDelay: `${200 + idx * 50}ms` }}>
-                                    <td className="p-4 font-medium group-hover:text-cde-text transition-colors">{habit.name}</td>
+                                    <td className="p-4 font-medium group-hover:text-cde-text transition-colors flex items-center justify-between gap-4">
+                                        <span>{habit.name}</span>
+                                        <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                                            <button onClick={() => {
+                                                const newName = window.prompt("Editar hábito:", habit.name);
+                                                if (newName && newName.trim()) {
+                                                    updateHabit(habit.id, newName.trim(), habit.schedule);
+                                                }
+                                            }} className="text-cde-border hover:text-cde-text hover:scale-110 active:scale-90 transition-all">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                                            </button>
+                                            <button onClick={() => {
+                                                if (window.confirm(`¿Estás seguro de eliminar el hábito "${habit.name}"? Se perderá todo su registro.`)) {
+                                                    deleteHabit(habit.id);
+                                                }
+                                            }} className="text-cde-border hover:text-red-400 hover:scale-110 active:scale-90 transition-all">
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
+                                    </td>
                                     {weekDays.map((date, i) => {
                                         const dayIndex = date.getDay() as keyof typeof dayMapping;
                                         const dayKey = dayMapping[dayIndex];

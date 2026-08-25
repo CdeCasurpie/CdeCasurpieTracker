@@ -1,62 +1,94 @@
 import { create } from 'zustand';
+import { TrackerData, Habit } from '../core/models';
 import { TrackerManager } from '../core/services/TrackerManager';
 import { LocalStorageService } from '../infrastructure/StorageService';
-import type { TrackerData, HabitSchedule } from '../core/models';
-
-// Initialize the single instance of our POO manager
-const storageService = new LocalStorageService();
-const trackerManager = new TrackerManager(storageService);
 
 interface TrackerState {
     data: TrackerData;
-    // Actions
-    addGoal: (description: string, category: string, deadline: string) => void;
+    
+    // Goals
+    addGoal: (desc: string, category: string, deadline: string) => void;
+    updateGoal: (id: string, desc: string, category: string) => void;
     deleteGoal: (id: string) => void;
-    addTask: (goalId: string, description: string, deadline: string) => void;
-    toggleTask: (taskId: string) => void;
-    deleteTask: (taskId: string) => void;
-    addHabit: (name: string, schedule: HabitSchedule) => void;
+    
+    // Tasks
+    addTask: (goalId: string, desc: string, deadline: string) => void;
+    updateTask: (id: string, desc: string) => void;
+    toggleTask: (id: string) => void;
+    deleteTask: (id: string) => void;
+    
+    // Habits
+    addHabit: (name: string, schedule: Habit['schedule']) => void;
+    updateHabit: (id: string, name: string, schedule: Habit['schedule']) => void;
+    deleteHabit: (id: string) => void;
     toggleHabitLog: (habitId: string, date: Date) => void;
-    importData: (json: string) => void;
+    
+    // Utils
     exportData: () => string;
+    importData: (json: string) => void;
 }
 
-export const useTrackerStore = create<TrackerState>((set) => ({
-    data: trackerManager.getData(),
+const storage = new LocalStorageService();
+const manager = new TrackerManager(storage);
 
-    addGoal: (description, category, deadline) => {
-        trackerManager.addGoal(description, category, deadline);
-        set({ data: trackerManager.getData() });
+export const useTrackerStore = create<TrackerState>((set) => ({
+    data: manager.getData(),
+
+    addGoal: (desc, category, deadline) => {
+        manager.addGoal(desc, category, deadline);
+        set({ data: { ...manager.getData() } });
+    },
+    updateGoal: (id, desc, category) => {
+        manager.updateGoal(id, desc, category);
+        set({ data: { ...manager.getData() } });
     },
     deleteGoal: (id) => {
-        trackerManager.deleteGoal(id);
-        set({ data: trackerManager.getData() });
+        manager.deleteGoal(id);
+        set({ data: { ...manager.getData() } });
     },
-    addTask: (goalId, description, deadline) => {
-        trackerManager.addTask(goalId, description, deadline);
-        set({ data: trackerManager.getData() });
+
+    addTask: (goalId, desc, deadline) => {
+        manager.addTask(goalId, desc, deadline);
+        set({ data: { ...manager.getData() } });
     },
-    toggleTask: (taskId) => {
-        trackerManager.toggleTask(taskId);
-        set({ data: trackerManager.getData() });
+    updateTask: (id, desc) => {
+        manager.updateTask(id, desc);
+        set({ data: { ...manager.getData() } });
     },
-    deleteTask: (taskId) => {
-        trackerManager.deleteTask(taskId);
-        set({ data: trackerManager.getData() });
+    toggleTask: (id) => {
+        manager.toggleTask(id);
+        set({ data: { ...manager.getData() } });
     },
+    deleteTask: (id) => {
+        manager.deleteTask(id);
+        set({ data: { ...manager.getData() } });
+    },
+
     addHabit: (name, schedule) => {
-        trackerManager.addHabit(name, schedule);
-        set({ data: trackerManager.getData() });
+        manager.addHabit(name, schedule);
+        set({ data: { ...manager.getData() } });
+    },
+    updateHabit: (id, name, schedule) => {
+        manager.updateHabit(id, name, schedule);
+        set({ data: { ...manager.getData() } });
+    },
+    deleteHabit: (id) => {
+        manager.deleteHabit(id);
+        set({ data: { ...manager.getData() } });
     },
     toggleHabitLog: (habitId, date) => {
-        trackerManager.toggleHabitLog(habitId, date);
-        set({ data: trackerManager.getData() });
+        // format date as yyyy-mm-dd
+        const dateStr = date.toISOString().split('T')[0];
+        manager.toggleHabitLog(habitId, dateStr);
+        set({ data: { ...manager.getData() } });
+    },
+
+    exportData: () => {
+        return JSON.stringify(manager.getData(), null, 2);
     },
     importData: (json) => {
-        trackerManager.importData(json);
-        set({ data: trackerManager.getData() });
-    },
-    exportData: () => {
-        return trackerManager.exportData();
+        const parsed = JSON.parse(json);
+        manager.replaceData(parsed);
+        set({ data: { ...manager.getData() } });
     }
 }));

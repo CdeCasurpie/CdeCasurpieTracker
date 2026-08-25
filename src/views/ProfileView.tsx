@@ -44,9 +44,9 @@ export const ProfileView: React.FC = () => {
                     <h3 className="text-xl tracking-widest uppercase mb-8 self-start w-full border-b border-cde-border pb-4">Tus Atributos</h3>
                     <div className="w-full h-[350px]">
                         <ResponsiveContainer width="100%" height="100%">
-                            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
+                            <RadarChart cx="50%" cy="50%" outerRadius={window.innerWidth < 768 ? "60%" : "70%"} data={radarData}>
                                 <PolarGrid stroke="#352321" />
-                                <PolarAngleAxis dataKey="subject" tick={{ fill: '#d09d9d', fontSize: 12, fontFamily: 'monospace' }} />
+                                <PolarAngleAxis dataKey="subject" tick={{ fill: '#d09d9d', fontSize: window.innerWidth < 768 ? 9 : 12, fontFamily: 'monospace' }} />
                                 <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                                 <Radar
                                     name="César"
