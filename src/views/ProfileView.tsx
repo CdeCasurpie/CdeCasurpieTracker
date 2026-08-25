@@ -109,7 +109,7 @@ export const ProfileView: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Nivel General a la Izquierda */}
-                <section className="bg-cde-bg-light border border-cde-border p-8 rounded-xl animate-slide-up shadow-sm hover:shadow-md transition-shadow flex flex-col justify-center relative" style={{ animationDelay: '100ms' }}>
+                <section className="level-tutorial-target bg-cde-bg-light border border-cde-border p-8 rounded-xl animate-slide-up shadow-sm hover:shadow-md transition-shadow flex flex-col justify-center relative" style={{ animationDelay: '100ms' }}>
                     <div className="flex justify-between items-center mb-6 border-b border-cde-border pb-4">
                         <h3 className="text-lg tracking-widest uppercase">Nivel General</h3>
                         <button 
@@ -142,7 +142,7 @@ export const ProfileView: React.FC = () => {
                 </section>
 
                 {/* Radar a la Derecha */}
-                <section className="bg-cde-bg-light border border-cde-border p-8 rounded-xl flex flex-col items-center justify-center min-h-[350px] animate-slide-up shadow-sm hover:shadow-md transition-shadow" style={{ animationDelay: '200ms' }}>
+                <section className="radar-tutorial-target bg-cde-bg-light border border-cde-border p-8 rounded-xl flex flex-col items-center justify-center min-h-[350px] animate-slide-up shadow-sm hover:shadow-md transition-shadow" style={{ animationDelay: '200ms' }}>
                     <h3 className="text-lg tracking-widest uppercase mb-4 self-start w-full border-b border-cde-border pb-4">Atributos Base</h3>
                     <div className="w-full h-[280px]">
                         <ResponsiveContainer width="100%" height="100%">
