@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Target, Activity, User, Settings, Smile } from 'lucide-react';
+import { Home, Target, Activity, User, Settings, ExternalLink } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
     const navItems = [
@@ -15,8 +15,8 @@ export const Sidebar: React.FC = () => {
             {/* DESKTOP SIDEBAR */}
             <aside className="hidden md:flex w-64 bg-cde-bg border-r border-cde-border flex-col h-screen fixed left-0 top-0 z-50">
                 <div className="p-8 border-b border-cde-border flex flex-col items-center justify-center">
-                    <div className="w-16 h-16 rounded-full border border-cde-text flex items-center justify-center relative shadow-[0_0_15px_rgba(252,211,209,0.15)] mb-4">
-                        <Smile className="text-cde-text" size={32} />
+                    <div className="w-16 h-16 rounded-full border border-cde-text flex items-center justify-center relative shadow-[0_0_15px_rgba(252,211,209,0.15)] mb-4 overflow-hidden">
+                        <img src="/favicon.png" alt="César Perales Logo" className="w-full h-full object-cover" />
                     </div>
                     <h1 className="text-sm font-bold tracking-[0.1em] uppercase text-center leading-tight">César Perales<br/><span className="text-cde-text-muted text-xs">Tracker</span></h1>
                 </div>
@@ -39,7 +39,7 @@ export const Sidebar: React.FC = () => {
                     ))}
                 </nav>
 
-                <div className="p-4 border-t border-cde-border">
+                <div className="p-4 border-t border-cde-border space-y-2">
                     <NavLink 
                         to="/configuracion"
                         className={({ isActive }) => 
@@ -52,6 +52,15 @@ export const Sidebar: React.FC = () => {
                     >
                         <Settings size={20} /> Ajustes
                     </NavLink>
+                    
+                    <a 
+                        href="https://cdecasurpie.github.io/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 px-4 py-3 rounded uppercase tracking-widest text-sm transition-colors text-cde-text-muted hover:text-cde-text hover:bg-cde-bg-light"
+                    >
+                        <ExternalLink size={20} /> Portafolio
+                    </a>
                 </div>
             </aside>
 
@@ -73,6 +82,7 @@ export const Sidebar: React.FC = () => {
                         <span className="text-[10px] uppercase tracking-widest">{item.label}</span>
                     </NavLink>
                 ))}
+                
                 <NavLink 
                     to="/configuracion"
                     className={({ isActive }) => 
@@ -86,6 +96,16 @@ export const Sidebar: React.FC = () => {
                     <Settings size={20} />
                     <span className="text-[10px] uppercase tracking-widest">Ajustes</span>
                 </NavLink>
+
+                <a 
+                    href="https://cdecasurpie.github.io/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col items-center gap-1 py-3 px-2 flex-1 transition-colors text-cde-text-muted hover:text-cde-text"
+                >
+                    <ExternalLink size={20} />
+                    <span className="text-[10px] uppercase tracking-widest">Web</span>
+                </a>
             </nav>
         </>
     );
