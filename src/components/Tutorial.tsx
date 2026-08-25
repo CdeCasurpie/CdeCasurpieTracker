@@ -130,14 +130,18 @@ export const Tutorial: React.FC = () => {
     const handleJoyrideCallback = (data: any) => {
         const { action, index, status, type } = data;
         
-        if (status === 'finished' || status === 'skipped' || type === 'tour:end') {
+        if (status === 'finished' || status === 'skipped') {
             setRun(false);
-            setStepIndex(0); // Reset for future plays
+            setStepIndex(0);
             localStorage.setItem('cde_tutorial_completed', 'true');
-            // Remove the overlay manually in case react-joyride gets stuck
-            const portal = document.getElementById('react-joyride-portal');
-            if (portal) portal.innerHTML = ''; 
         } else if (type === 'step:after' || type === 'error:target_not_found') {
+            if (action === 'next' && index === steps.length - 1) {
+                setRun(false);
+                setStepIndex(0);
+                localStorage.setItem('cde_tutorial_completed', 'true');
+                return;
+            }
+
             const nextStepIndex = index + (action === 'prev' ? -1 : 1);
             if (nextStepIndex >= 0 && nextStepIndex < steps.length) {
                 const nextRoute = steps[nextStepIndex].route;
@@ -158,9 +162,6 @@ export const Tutorial: React.FC = () => {
             onEvent={handleJoyrideCallback}
             tooltipComponent={Tooltip}
             styles={{
-                floater: {
-                    transition: 'all 0.5s ease-in-out',
-                },
                 overlay: {
                     backgroundColor: 'rgba(21, 15, 14, 0.85)',
                 }
