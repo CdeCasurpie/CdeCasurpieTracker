@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useTrackerStore } from '../store/useTrackerStore';
-import { PlusCircle, CheckCircle, Circle, Trash2 } from 'lucide-react';
+import { PlusCircle, CheckCircle, Circle, Trash2, CheckSquare, Square } from 'lucide-react';
+import { format, startOfWeek, addDays, isSameDay, parseISO } from 'date-fns';
 
 export const Dashboard: React.FC = () => {
-    const { data, addTask, toggleTask, addGoal, deleteTask } = useTrackerStore();
+    const { data, addTask, toggleTask, addGoal, deleteTask, addHabit, toggleHabitLog } = useTrackerStore();
     const [newGoalDesc, setNewGoalDesc] = useState('');
     const [newTaskDesc, setNewTaskDesc] = useState('');
     const [selectedGoalId, setSelectedGoalId] = useState('');
+    const [newHabitName, setNewHabitName] = useState('');
 
     const handleAddGoal = (e: React.FormEvent) => {
         e.preventDefault();
@@ -22,6 +24,25 @@ export const Dashboard: React.FC = () => {
             addTask(selectedGoalId, newTaskDesc, new Date().toISOString());
             setNewTaskDesc('');
         }
+    };
+
+    const handleAddHabit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (newHabitName.trim()) {
+            addHabit(newHabitName, { L: true, M: true, Mi: true, J: true, V: true, S: true, D: true });
+            setNewHabitName('');
+        }
+    };
+
+    // Calculate current week dates (Monday to Sunday)
+    const today = new Date();
+    const startOfCurrentWeek = startOfWeek(today, { weekStartsOn: 1 }); // 1 = Monday
+    const weekDays = Array.from({ length: 7 }).map((_, i) => addDays(startOfCurrentWeek, i));
+    const dayLabels = ['L', 'M', 'Mi', 'J', 'V', 'S', 'D'];
+
+    const getHabitLogForDate = (habitId: string, date: Date) => {
+        const dateStr = format(date, 'yyyy-MM-dd');
+        return data.habitLogs.find(l => l.habitId === habitId && l.date === dateStr);
     };
 
     return (
@@ -67,6 +88,88 @@ export const Dashboard: React.FC = () => {
                     />
                     <button type="submit" className="border border-cde-text px-4 py-2 rounded hover:bg-cde-text hover:text-cde-bg transition-colors flex items-center gap-2">
                         <PlusCircle size={16} /> Añadir
+                    </button>
+                </form>
+            </section>
+
+            {/* Hábitos Section (Heatmap) */}
+            <section>
+                <div className="flex items-center justify-between mb-6 border-b border-cde-border pb-2">
+                    <h2 className="text-xl tracking-widest uppercase">Progreso de Hábitos</h2>
+                </div>
+                
+                <div className="bg-cde-bg-light border border-cde-border rounded-lg overflow-x-auto">
+                    <table className="w-full text-left border-collapse min-w-[600px]">
+                        <thead>
+                            <tr className="bg-cde-bg-lighter border-b border-cde-border text-sm tracking-wider text-cde-text-muted">
+                                <th className="p-4 font-normal uppercase">Hábito</th>
+                                {weekDays.map((date, i) => (
+                                    <th key={i} className="p-4 font-normal text-center">
+                                        <div className="flex flex-col items-center">
+                                            <span className="uppercase text-xs">{dayLabels[i]}</span>
+                                            <span className={`text-lg ${isSameDay(date, today) ? 'text-cde-text font-bold' : ''}`}>
+                                                {format(date, 'd')}
+                                            </span>
+                                        </div>
+                                    </th>
+                                ))}
+                                <th className="p-4 font-normal text-center uppercase">Progreso</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.habits.length === 0 && (
+                                <tr>
+                                    <td colSpan={9} className="p-4 text-center text-cde-text-muted text-sm italic">Sin hábitos registrados.</td>
+                                </tr>
+                            )}
+                            {data.habits.map(habit => {
+                                // Calculate weekly progress
+                                const executedDays = weekDays.filter(date => getHabitLogForDate(habit.id, date)?.executed).length;
+                                const totalScheduled = 7; // For simplicity, assuming all 7 days for now. In a full version we'd check habit.schedule
+                                const progress = Math.round((executedDays / totalScheduled) * 100);
+
+                                return (
+                                    <tr key={habit.id} className="border-b border-cde-border hover:bg-cde-bg-lighter/50 transition-colors">
+                                        <td className="p-4 font-medium">{habit.name}</td>
+                                        {weekDays.map((date, i) => {
+                                            const log = getHabitLogForDate(habit.id, date);
+                                            const isExecuted = log?.executed || false;
+                                            return (
+                                                <td key={i} className="p-4 text-center">
+                                                    <button 
+                                                        onClick={() => toggleHabitLog(habit.id, date)} 
+                                                        className={`transition-colors ${isExecuted ? 'text-cde-text' : 'text-cde-text-muted hover:text-white'}`}
+                                                    >
+                                                        {isExecuted ? <CheckSquare size={22} /> : <Square size={22} />}
+                                                    </button>
+                                                </td>
+                                            );
+                                        })}
+                                        <td className="p-4">
+                                            <div className="flex items-center gap-2 justify-center">
+                                                <div className="w-16 bg-cde-bg-lighter h-2 rounded-full overflow-hidden">
+                                                    <div className="h-full bg-cde-text transition-all" style={{ width: `${progress}%` }}></div>
+                                                </div>
+                                                <span className="text-xs w-8">{progress}%</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+
+                <form onSubmit={handleAddHabit} className="mt-6 flex gap-4">
+                    <input 
+                        type="text" 
+                        value={newHabitName}
+                        onChange={e => setNewHabitName(e.target.value)}
+                        placeholder="Nuevo hábito..." 
+                        className="bg-cde-bg-light border border-cde-border px-4 py-2 rounded focus:outline-none focus:border-cde-text flex-1"
+                    />
+                    <button type="submit" className="border border-cde-text px-4 py-2 rounded hover:bg-cde-text hover:text-cde-bg transition-colors flex items-center gap-2">
+                        <PlusCircle size={16} /> Añadir Hábito
                     </button>
                 </form>
             </section>
