@@ -49,7 +49,14 @@ export class LocalStorageService implements IStorageService {
         const goals = (parsed.goals || []).map((g: any) => new Goal(g.id, g.description, g.category, g.deadline, g.status, g.progress));
         const tasks = (parsed.tasks || []).map((t: any) => new Task(t.id, t.goalId, t.description, t.deadline, t.completed));
         const habits = (parsed.habits || []).map((h: any) => new Habit(h.id, h.name, h.schedule));
-        const habitLogs = (parsed.habitLogs || []).map((l: any) => new HabitLog(l.date, l.habitId, l.executed));
+        
+        const habitLogs = (parsed.habitLogs || []).map((l: any) => {
+            // Auto-correct corrupted data from previous bug where date and habitId were swapped
+            if (l.date && l.date.startsWith('h_') && l.habitId && !l.habitId.startsWith('h_')) {
+                return new HabitLog(l.habitId, l.date, l.executed);
+            }
+            return new HabitLog(l.date, l.habitId, l.executed);
+        });
         
         return new TrackerData(goals, tasks, habits, habitLogs);
     }

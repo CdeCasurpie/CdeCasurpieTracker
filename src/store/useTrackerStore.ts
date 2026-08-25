@@ -77,8 +77,8 @@ export const useTrackerStore = create<TrackerState>((set) => ({
         set({ data: { ...manager.getData() } });
     },
     toggleHabitLog: (habitId, date) => {
-        // format date as yyyy-mm-dd
-        const dateStr = date.toISOString().split('T')[0];
+        // format date as yyyy-mm-dd local time
+        const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
         manager.toggleHabitLog(habitId, dateStr);
         set({ data: { ...manager.getData() } });
     },

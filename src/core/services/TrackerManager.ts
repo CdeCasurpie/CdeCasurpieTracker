@@ -124,7 +124,7 @@ export class TrackerManager {
         if (existingLog) {
             existingLog.executed = !existingLog.executed;
         } else {
-            this.data.habitLogs.push(new HabitLog(habitId, date, true));
+            this.data.habitLogs.push(new HabitLog(date, habitId, true));
         }
         this.saveData();
     }
