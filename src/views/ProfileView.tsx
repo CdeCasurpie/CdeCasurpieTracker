@@ -198,6 +198,30 @@ export const ProfileView: React.FC = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Danger Zone */}
+            <section className="bg-red-950/20 border border-red-900/50 p-8 rounded-xl animate-slide-up shadow-sm mt-8" style={{ animationDelay: '400ms' }}>
+                <h3 className="text-lg tracking-widest uppercase mb-4 text-red-400 font-bold flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    Zona de Peligro
+                </h3>
+                <p className="text-sm text-cde-text-muted mb-6">Si deseas reiniciar por completo tu progreso, puedes borrar todos los datos. Esta acción no se puede deshacer.</p>
+                <button 
+                    onClick={() => {
+                        const input = window.prompt('Para confirmar, escribe "eliminar"');
+                        if (input === 'eliminar') {
+                            useTrackerStore.getState().clearAllData();
+                            alert('Todos los datos han sido eliminados.');
+                            window.location.reload();
+                        } else if (input !== null) {
+                            alert('Palabra incorrecta. Cancelado.');
+                        }
+                    }}
+                    className="bg-red-900/50 hover:bg-red-800/80 text-white border border-red-700 transition-colors px-6 py-3 rounded-lg text-sm font-bold uppercase tracking-widest shadow-md hover:shadow-lg active:scale-95"
+                >
+                    Reiniciar Personaje (Borrar Todo)
+                </button>
+            </section>
         </div>
     );
 };

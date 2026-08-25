@@ -26,6 +26,7 @@ interface TrackerState {
     // Utils
     exportData: () => string;
     importData: (json: string) => void;
+    clearAllData: () => void;
 }
 
 const storage = new LocalStorageService();
@@ -89,6 +90,10 @@ export const useTrackerStore = create<TrackerState>((set) => ({
     importData: (json) => {
         const parsed = JSON.parse(json);
         manager.replaceData(parsed);
+        set({ data: { ...manager.getData() } });
+    },
+    clearAllData: () => {
+        manager.clearAllData();
         set({ data: { ...manager.getData() } });
     }
 }));

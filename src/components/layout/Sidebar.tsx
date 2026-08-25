@@ -5,10 +5,10 @@ import logoUrl from '../../assets/logo.png';
 
 export const Sidebar: React.FC = () => {
     const navItems = [
-        { path: '/', label: 'Dashboard', icon: <Home size={20} /> },
-        { path: '/metas', label: 'Metas', icon: <Target size={20} /> },
-        { path: '/habitos', label: 'Hábitos', icon: <Activity size={20} /> },
-        { path: '/perfil', label: 'Perfil', icon: <User size={20} /> },
+        { path: '/', label: 'Dashboard', icon: <Home size={20} />, className: 'nav-dashboard' },
+        { path: '/metas', label: 'Metas', icon: <Target size={20} />, className: 'nav-metas' },
+        { path: '/habitos', label: 'Hábitos', icon: <Activity size={20} />, className: 'nav-habitos' },
+        { path: '/perfil', label: 'Perfil', icon: <User size={20} />, className: 'nav-perfil' },
     ];
 
     return (
@@ -28,7 +28,7 @@ export const Sidebar: React.FC = () => {
                             key={item.path} 
                             to={item.path}
                             className={({ isActive }) => 
-                                `flex items-center gap-3 px-4 py-3 rounded uppercase tracking-widest text-sm transition-colors ${
+                                `flex items-center gap-3 px-4 py-3 rounded uppercase tracking-widest text-sm transition-colors ${item.className} ${
                                     isActive 
                                     ? 'bg-cde-bg-lighter text-cde-text border border-cde-border' 
                                     : 'text-cde-text-muted hover:text-cde-text hover:bg-cde-bg-light'
@@ -72,7 +72,7 @@ export const Sidebar: React.FC = () => {
                         key={item.path} 
                         to={item.path}
                         className={({ isActive }) => 
-                            `flex flex-col items-center gap-1 py-3 px-2 flex-1 transition-colors ${
+                            `flex flex-col items-center gap-1 py-3 px-2 flex-1 transition-colors ${item.className} ${
                                 isActive 
                                 ? 'text-cde-text' 
                                 : 'text-cde-text-muted hover:text-cde-text'

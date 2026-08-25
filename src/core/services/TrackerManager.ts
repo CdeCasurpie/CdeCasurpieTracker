@@ -129,6 +129,11 @@ export class TrackerManager {
         this.saveData();
     }
 
+    public clearAllData(): void {
+        this.data = new TrackerData([], [], [], []);
+        this.saveData();
+    }
+
     public replaceData(newData: TrackerData): void {
         this.data = newData;
         this.saveData();
