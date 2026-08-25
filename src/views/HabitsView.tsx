@@ -158,7 +158,7 @@ export const HabitsView: React.FC = () => {
                         </div>
 
                         {scheduleType === 'custom' && (
-                            <div className="flex gap-3">
+                            <div className="flex flex-wrap gap-3">
                                 {dayLabels.map(day => (
                                     <button 
                                         type="button"

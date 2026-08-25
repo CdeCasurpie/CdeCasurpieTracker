@@ -33,7 +33,7 @@ export const GoalsView: React.FC = () => {
             </header>
 
             <section>
-                <form onSubmit={handleAddGoal} className="flex gap-4 mb-8">
+                <form onSubmit={handleAddGoal} className="flex flex-col md:flex-row gap-4 mb-8">
                     <input 
                         type="text" 
                         value={newGoalDesc}

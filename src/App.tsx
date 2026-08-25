@@ -11,7 +11,7 @@ function App() {
     <Router>
       <div className="flex min-h-screen bg-cde-bg text-cde-text font-mono selection:bg-cde-text selection:text-cde-bg">
         <Sidebar />
-        <main className="flex-1 ml-64 p-8 md:p-12 overflow-y-auto">
+        <main className="flex-1 md:ml-64 p-4 md:p-8 lg:p-12 pb-24 md:pb-12 overflow-y-auto w-full">
           <Routes>
             <Route path="/" element={<DashboardView />} />
             <Route path="/metas" element={<GoalsView />} />
